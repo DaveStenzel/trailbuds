@@ -1,0 +1,176 @@
+================================================================
+                        TRAILBUDS
+       Australia's Adventure Meetup & Group Finder
+                        App Plan
+================================================================
+
+
+----------------------------------------------------------------
+1. WHAT IS THIS APP?
+----------------------------------------------------------------
+
+Trailbuds is an Australian outdoor adventure community app where
+hikers, mountain bikers, and trail runners can find each other,
+plan activities, and share experiences.
+
+Think of it like this:
+  - Like Facebook Groups, but only for outdoor adventures in Australia
+  - Users create a profile showing what activities they love
+  - Anyone can post an upcoming hike, ride, or run
+  - Others can comment, ask questions, or click "I'm In!" to join
+
+
+----------------------------------------------------------------
+2. KEY FEATURES
+----------------------------------------------------------------
+
+  USER PROFILES
+  Name, photo, location (state/city), activity preferences
+  (hiking, MTB, trail running), fitness level, and a short bio.
+
+  ACTIVITY POSTS
+  Post a planned adventure with date, location, difficulty,
+  max group size, and a description.
+
+  COMMENTS & ADVICE
+  Other users can comment on posts — great for gear tips,
+  track conditions, and carpooling.
+
+  JOIN BUTTON
+  Users can RSVP to join an activity. The post shows who's coming.
+
+  SEARCH & FILTER
+  Find activities by state, activity type, date, or difficulty level.
+
+  NOTIFICATIONS
+  Get notified when someone joins your event or comments on a
+  post you're attending.
+
+
+----------------------------------------------------------------
+3. APP PAGES (SCREENS)
+----------------------------------------------------------------
+
+  Page 1 — Home / Feed
+    Shows upcoming activities near you or in your state.
+
+  Page 2 — Activity Detail
+    Full info about one event — description, map, who's going,
+    and comments.
+
+  Page 3 — Create Activity
+    A form to post your own hike, ride, or run.
+
+  Page 4 — My Profile
+    Your photo, bio, past activities, and upcoming events.
+
+  Page 5 — User Profile
+    View someone else's profile and their upcoming activities.
+
+  Page 6 — Search
+    Filter activities by type, state, date, and difficulty.
+
+  Page 7 — Sign Up / Login
+    Create an account or log back in.
+
+
+----------------------------------------------------------------
+4. TECH STACK (WHAT TO BUILD WITH)
+----------------------------------------------------------------
+
+  Frontend (what users see)
+    Tool: React + Tailwind CSS
+    Why:  React is the most popular UI framework. Tailwind makes
+          styling easy without writing a lot of CSS.
+
+  Backend (server logic)
+    Tool: Supabase
+    Why:  Free to start, handles your database and user login
+          automatically. No complex server setup needed.
+
+  Database (storing data)
+    Tool: Supabase (PostgreSQL)
+    Why:  Comes with Supabase. Stores users, posts, comments,
+          and RSVPs.
+
+  Authentication (login)
+    Tool: Supabase Auth
+    Why:  Email/password login built in. Can add Google login later.
+
+  File Storage (photos)
+    Tool: Supabase Storage
+    Why:  Store profile pictures and activity photos.
+
+  Maps
+    Tool: Leaflet.js or Google Maps
+    Why:  Show trail locations on a map for each activity post.
+
+  Hosting
+    Tool: Vercel (free)
+    Why:  Deploy your frontend for free with one click from GitHub.
+
+
+----------------------------------------------------------------
+5. DATABASE DESIGN (WHAT GETS STORED)
+----------------------------------------------------------------
+
+  Think of each table like a spreadsheet.
+  Here are the 4 main ones you need:
+
+  USERS TABLE
+    id, name, email, profile_photo, bio, location (state),
+    activity_types, fitness_level
+
+  ACTIVITIES TABLE
+    id, title, description, date_time, location_name,
+    gps_coordinates, activity_type, difficulty,
+    max_participants, created_by (user id)
+
+  COMMENTS TABLE
+    id, activity_id, user_id, comment_text, created_at
+
+  RSVPS TABLE
+    id, activity_id, user_id, status (going/maybe), joined_at
+
+
+----------------------------------------------------------------
+6. BUILD ORDER (STEP BY STEP)
+----------------------------------------------------------------
+
+  Build in this order so you always have something working to test:
+
+  PHASE 1 — Authentication
+    - Set up Supabase project
+    - Build Sign Up page
+    - Build Login page
+    - Redirect to home after login
+
+  PHASE 2 — User Profiles
+    - Create profile page
+    - Upload profile photo
+    - Edit bio and activity preferences
+
+  PHASE 3 — Activity Feed
+    - Display list of upcoming activities
+    - Filter by state and activity type
+    - Click to view activity detail
+
+  PHASE 4 — Create Activity
+    - Build the "Post Activity" form
+    - Save to Supabase database
+    - Show on feed after posting
+
+  PHASE 5 — Social Features
+    - Add comments to activity pages
+    - Add RSVP / Join button
+    - Show list of who's going
+
+  PHASE 6 — Polish & Launch
+    - Add notifications
+    - Mobile-friendly design
+    - Deploy to Vercel
+
+
+================================================================
+        Trailbuds App Plan · Built for Australian Adventurers
+================================================================
