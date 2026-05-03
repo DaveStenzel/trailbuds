@@ -1,6 +1,12 @@
+@import 'leaflet/dist/leaflet.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Leaflet map styles */
-@import 'leaflet/dist/leaflet.css';
+@layer base {
+  body {
+    @apply bg-trail-stone text-gray-800 antialiased;
+    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  }
+}

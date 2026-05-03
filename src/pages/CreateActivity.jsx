@@ -1,23 +1,40 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 const STATES = ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT']
 
+const EMPTY_FORM = {
+  title: '',
+  description: '',
+  date_time: '',
+  location_name: '',
+  state: 'NSW',
+  activity_type: 'hiking',
+  difficulty: 'easy',
+  max_participants: 10,
+}
+
 export default function CreateActivity({ session }) {
   const navigate = useNavigate()
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    date_time: '',
-    location_name: '',
-    state: 'NSW',
-    activity_type: 'hiking',
-    difficulty: 'easy',
-    max_participants: 10,
-  })
+  const { id } = useParams()
+  const isEditing = Boolean(id)
+
+  const [form, setForm] = useState(EMPTY_FORM)
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(isEditing)
+
+  useEffect(() => {
+    if (!isEditing) return
+    supabase.from('activities').select('*').eq('id', id).single().then(({ data, error }) => {
+      if (error || !data) { navigate('/'); return }
+      if (data.created_by !== session.user.id) { navigate(`/activity/${id}`); return }
+      // Format datetime-local value (strip seconds/timezone)
+      const dt = data.date_time ? data.date_time.slice(0, 16) : ''
+      setForm({ ...data, date_time: dt })
+      setLoading(false)
+    })
+  }, [id])
 
   const set = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }))
 
@@ -26,17 +43,24 @@ export default function CreateActivity({ session }) {
     setError('')
     setLoading(true)
 
-    const { data, error } = await supabase
-      .from('activities')
-      .insert({ ...form, created_by: session.user.id })
-      .select()
-      .single()
+    if (isEditing) {
+      const { error } = await supabase
+        .from('activities')
+        .update({ ...form })
+        .eq('id', id)
+        .eq('created_by', session.user.id)
 
-    if (error) {
-      setError(error.message)
-      setLoading(false)
+      if (error) { setError(error.message); setLoading(false) }
+      else navigate(`/activity/${id}`)
     } else {
-      navigate(`/activity/${data.id}`)
+      const { data, error } = await supabase
+        .from('activities')
+        .insert({ ...form, created_by: session.user.id })
+        .select()
+        .single()
+
+      if (error) { setError(error.message); setLoading(false) }
+      else navigate(`/activity/${data.id}`)
     }
   }
 
@@ -44,7 +68,7 @@ export default function CreateActivity({ session }) {
 
   return (
     <div className="max-w-xl mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold text-trail-green mb-6">Post an Adventure</h2>
+      <h2 className="text-2xl font-bold text-trail-green mb-6">{isEditing ? 'Edit Adventure' : 'Post an Adventure'}</h2>
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow p-6 space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
@@ -77,6 +101,7 @@ export default function CreateActivity({ session }) {
               <option value="hiking">Hiking</option>
               <option value="mtb">MTB</option>
               <option value="trail_running">Trail Running</option>
+              <option value="adventure_racing">Adventure Racing</option>
             </select>
           </div>
           <div>
@@ -96,7 +121,7 @@ export default function CreateActivity({ session }) {
         {error && <p className="text-red-600 text-xs">{error}</p>}
 
         <button type="submit" disabled={loading} className="w-full bg-trail-green text-white py-3 rounded-xl font-semibold hover:bg-green-800 transition-colors disabled:opacity-60">
-          {loading ? 'Posting...' : 'Post Adventure'}
+          {loading ? (isEditing ? 'Saving...' : 'Posting...') : (isEditing ? 'Save Changes' : 'Post Adventure')}
         </button>
       </form>
     </div>

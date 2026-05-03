@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 export default function ActivityDetail({ session }) {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [activity, setActivity] = useState(null)
   const [comments, setComments] = useState([])
   const [rsvps, setRsvps] = useState([])
@@ -60,7 +61,17 @@ export default function ActivityDetail({ session }) {
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
       <div className="bg-white rounded-2xl shadow p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">{activity.title}</h1>
+        <div className="flex items-start justify-between mb-1">
+          <h1 className="text-2xl font-bold text-gray-900">{activity.title}</h1>
+          {activity.profiles?.id === session.user.id && (
+            <button
+              onClick={() => navigate(`/edit/${id}`)}
+              className="ml-4 text-sm text-trail-green border border-trail-green px-3 py-1 rounded-lg hover:bg-trail-green hover:text-white transition-colors shrink-0"
+            >
+              Edit Post
+            </button>
+          )}
+        </div>
         <p className="text-sm text-gray-500 mb-4">
           Posted by <Link to={`/user/${activity.profiles?.id}`} className="text-trail-green font-medium hover:underline">{activity.profiles?.full_name}</Link>
         </p>
@@ -71,7 +82,7 @@ export default function ActivityDetail({ session }) {
           <div>📍 {activity.location_name}</div>
           <div>📊 {activity.difficulty}</div>
           <div>👥 Max {activity.max_participants} people</div>
-          <div>🏷️ {activity.activity_type}</div>
+          <div>🏷️ {activity.activity_type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</div>
         </div>
         <button
           onClick={toggleRsvp}

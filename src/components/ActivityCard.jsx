@@ -1,43 +1,73 @@
 import { Link } from 'react-router-dom'
 
 const DIFFICULTY_COLORS = {
-  easy:   'bg-green-100 text-green-800',
-  medium: 'bg-yellow-100 text-yellow-800',
+  easy:   'bg-emerald-100 text-emerald-800',
+  medium: 'bg-amber-100 text-amber-800',
   hard:   'bg-red-100 text-red-800',
 }
 
+const ACTIVITY_PHOTOS = {
+  hiking:           'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80',
+  mtb:              'https://images.unsplash.com/photo-1544191696-15693072e65f?auto=format&fit=crop&w=800&q=80',
+  trail_running:    'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=800&q=80',
+  adventure_racing: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80',
+}
+
+const ACTIVITY_LABELS = {
+  hiking:           'Hiking',
+  mtb:              'MTB',
+  trail_running:    'Trail Running',
+  adventure_racing: 'Adventure Racing',
+}
+
 const ACTIVITY_ICONS = {
-  hiking:        '🥾',
-  mtb:           '🚵',
-  trail_running: '🏃',
+  hiking:           '🥾',
+  mtb:              '🚵',
+  trail_running:    '🏃',
+  adventure_racing: '🏆',
 }
 
 export default function ActivityCard({ activity }) {
   const date = new Date(activity.date_time)
+  const photo = ACTIVITY_PHOTOS[activity.activity_type] ?? ACTIVITY_PHOTOS.hiking
 
   return (
-    <Link to={`/activity/${activity.id}`} className="block">
-      <div className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow p-4 border border-gray-100">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-2xl">{ACTIVITY_ICONS[activity.activity_type] ?? '🏕️'}</span>
-          <h3 className="font-semibold text-gray-900 text-lg leading-tight">{activity.title}</h3>
-        </div>
-        <p className="text-sm text-gray-500 mb-3 line-clamp-2">{activity.description}</p>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <span className="bg-trail-stone px-2 py-1 rounded-full text-trail-green font-medium">
-            📍 {activity.location_name}
+    <Link to={`/activity/${activity.id}`} className="block group">
+      <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100">
+
+        {/* Photo banner */}
+        <div className="relative h-36 overflow-hidden">
+          <img
+            src={photo}
+            alt={activity.activity_type}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <span className="absolute bottom-2 left-3 text-white text-xs font-bold bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full">
+            {ACTIVITY_ICONS[activity.activity_type]} {ACTIVITY_LABELS[activity.activity_type] ?? activity.activity_type}
           </span>
-          <span className="bg-trail-stone px-2 py-1 rounded-full text-gray-600">
-            📅 {date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })}
-          </span>
-          <span className={`px-2 py-1 rounded-full font-medium capitalize ${DIFFICULTY_COLORS[activity.difficulty] ?? 'bg-gray-100 text-gray-700'}`}>
-            {activity.difficulty}
-          </span>
-          {activity.rsvp_count !== undefined && (
-            <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
+          {activity.rsvp_count !== undefined && activity.rsvp_count > 0 && (
+            <span className="absolute bottom-2 right-3 text-white text-xs font-semibold bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full">
               👥 {activity.rsvp_count} going
             </span>
           )}
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          <h3 className="font-bold text-gray-900 text-base leading-snug mb-1">{activity.title}</h3>
+          <p className="text-sm text-gray-500 mb-3 line-clamp-2">{activity.description}</p>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="bg-trail-mist text-trail-green font-semibold px-2.5 py-1 rounded-full">
+              📍 {activity.location_name}
+            </span>
+            <span className="bg-trail-mist text-gray-600 px-2.5 py-1 rounded-full">
+              📅 {date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric', month: 'short' })}
+            </span>
+            <span className={`px-2.5 py-1 rounded-full font-semibold capitalize ${DIFFICULTY_COLORS[activity.difficulty] ?? 'bg-gray-100 text-gray-700'}`}>
+              {activity.difficulty}
+            </span>
+          </div>
         </div>
       </div>
     </Link>

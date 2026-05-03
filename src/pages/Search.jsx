@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import ActivityCard from '../components/ActivityCard'
 
 const STATES      = ['Any State', 'NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT']
-const TYPES       = ['Any Type', 'hiking', 'mtb', 'trail_running']
+const TYPES       = ['Any Type', 'hiking', 'mtb', 'trail_running', 'adventure_racing']
 const DIFFICULTIES = ['Any Difficulty', 'easy', 'medium', 'hard']
 
 export default function Search() {
@@ -40,7 +40,7 @@ export default function Search() {
           {STATES.map(s => <option key={s}>{s}</option>)}
         </select>
         <select value={filters.type} onChange={set('type')} className={`${sel} capitalize`}>
-          {TYPES.map(t => <option key={t} className="capitalize">{t}</option>)}
+          {TYPES.map(t => <option key={t}>{t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>)}
         </select>
         <select value={filters.difficulty} onChange={set('difficulty')} className={`${sel} capitalize`}>
           {DIFFICULTIES.map(d => <option key={d} className="capitalize">{d}</option>)}

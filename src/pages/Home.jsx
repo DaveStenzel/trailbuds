@@ -3,7 +3,7 @@ import { supabase } from '../lib/supabase'
 import ActivityCard from '../components/ActivityCard'
 
 const STATES = ['All States', 'NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'ACT', 'NT']
-const TYPES  = ['All Types', 'hiking', 'mtb', 'trail_running']
+const TYPES  = ['All Types', 'hiking', 'mtb', 'trail_running', 'adventure_racing']
 
 export default function Home({ session }) {
   const [activities, setActivities] = useState([])
@@ -48,7 +48,7 @@ export default function Home({ session }) {
           onChange={e => setTypeFilter(e.target.value)}
           className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-trail-green capitalize"
         >
-          {TYPES.map(t => <option key={t} className="capitalize">{t}</option>)}
+          {TYPES.map(t => <option key={t}>{t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>)}
         </select>
       </div>
 

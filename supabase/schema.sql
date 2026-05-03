@@ -26,7 +26,7 @@ create table if not exists public.activities (
   state            text not null,
   gps_lat          numeric,
   gps_lng          numeric,
-  activity_type    text not null check (activity_type in ('hiking', 'mtb', 'trail_running')),
+  activity_type    text not null check (activity_type in ('hiking', 'mtb', 'trail_running', 'adventure_racing')),
   difficulty       text not null check (difficulty in ('easy', 'medium', 'hard')),
   max_participants int  not null default 10,
   created_at       timestamptz default now()
