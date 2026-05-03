@@ -29,7 +29,7 @@ const ACTIVITY_ICONS = {
 
 export default function ActivityCard({ activity }) {
   const date = new Date(activity.date_time)
-  const photo = ACTIVITY_PHOTOS[activity.activity_type] ?? ACTIVITY_PHOTOS.hiking
+  const photo = activity.images?.[0] ?? ACTIVITY_PHOTOS[activity.activity_type] ?? ACTIVITY_PHOTOS.hiking
 
   return (
     <Link to={`/activity/${activity.id}`} className="block group">

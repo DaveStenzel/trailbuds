@@ -29,6 +29,7 @@ create table if not exists public.activities (
   activity_type    text not null check (activity_type in ('hiking', 'mtb', 'trail_running', 'adventure_racing')),
   difficulty       text not null check (difficulty in ('easy', 'medium', 'hard')),
   max_participants int  not null default 10,
+  images           text[] default '{}',
   created_at       timestamptz default now()
 );
 
@@ -102,3 +103,14 @@ create or replace trigger on_auth_user_created
 insert into storage.buckets (id, name, public)
 values ('avatars', 'avatars', true)
 on conflict do nothing;
+
+-- ----------------------------------------------------------------
+-- Storage bucket for activity images
+-- ----------------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('activity-images', 'activity-images', true)
+on conflict do nothing;
+
+create policy "activity_images_select" on storage.objects for select using (bucket_id = 'activity-images');
+create policy "activity_images_insert" on storage.objects for insert with check (bucket_id = 'activity-images' and auth.uid() is not null);
+create policy "activity_images_delete" on storage.objects for delete using (bucket_id = 'activity-images' and auth.uid() is not null);

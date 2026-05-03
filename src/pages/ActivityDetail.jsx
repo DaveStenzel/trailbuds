@@ -76,6 +76,26 @@ export default function ActivityDetail({ session }) {
           Posted by <Link to={`/user/${activity.profiles?.id}`} className="text-trail-green font-medium hover:underline">{activity.profiles?.full_name}</Link>
         </p>
         <p className="text-gray-700 mb-4">{activity.description}</p>
+
+        {/* Image gallery */}
+        {activity.images?.length > 0 && (
+          <div className="mb-4">
+            <div className={`grid gap-2 ${activity.images.length === 1 ? 'grid-cols-1' : activity.images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+              {activity.images.map((url, i) => (
+                <a key={url} href={url} target="_blank" rel="noopener noreferrer"
+                  className={`block overflow-hidden rounded-xl ${activity.images.length === 1 ? 'aspect-video' : 'aspect-square'}`}>
+                  <img
+                    src={url}
+                    alt={`Activity photo ${i + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </a>
+              ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-1">Click any photo to view full size</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3 text-sm text-gray-600">
           <div>📅 {date.toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</div>
           <div>⏰ {date.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}</div>
