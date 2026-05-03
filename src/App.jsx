@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 import Navbar from './components/Navbar'
+import LandingPage from './pages/LandingPage'
 import Home from './pages/Home'
 import ActivityDetail from './pages/ActivityDetail'
 import CreateActivity from './pages/CreateActivity'
@@ -36,17 +37,19 @@ export default function App() {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       {session && <Navbar session={session} />}
       <Routes>
-        <Route path="/auth" element={session ? <Navigate to="/" /> : <Auth />} />
-        <Route path="/" element={session ? <Home session={session} /> : <Navigate to="/auth" />} />
+        <Route path="/auth" element={session ? <Navigate to="/feed" /> : <Auth />} />
+        <Route path="/" element={<LandingPage session={session} />} />
+        <Route path="/feed" element={session ? <Home session={session} /> : <Navigate to="/auth" />} />
         <Route path="/activity/:id" element={session ? <ActivityDetail session={session} /> : <Navigate to="/auth" />} />
         <Route path="/create" element={session ? <CreateActivity session={session} /> : <Navigate to="/auth" />} />
+        <Route path="/edit/:id" element={session ? <CreateActivity session={session} /> : <Navigate to="/auth" />} />
         <Route path="/profile" element={session ? <MyProfile session={session} /> : <Navigate to="/auth" />} />
         <Route path="/user/:id" element={session ? <UserProfile session={session} /> : <Navigate to="/auth" />} />
         <Route path="/search" element={session ? <Search session={session} /> : <Navigate to="/auth" />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
