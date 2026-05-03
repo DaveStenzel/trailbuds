@@ -7,10 +7,10 @@ const DIFFICULTY_COLORS = {
 }
 
 const ACTIVITY_PHOTOS = {
-  hiking:           'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80',
-  mtb:              'https://images.unsplash.com/photo-1544191696-15693072e65f?auto=format&fit=crop&w=800&q=80',
-  trail_running:    'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=800&q=80',
-  adventure_racing: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80',
+  hiking:           'https://images.unsplash.com/photo-1757557676238-a63b018eeb92?auto=format&fit=crop&w=800&q=80',
+  mtb:              'https://images.unsplash.com/photo-1658801536922-102ddcf99878?auto=format&fit=crop&w=800&q=80',
+  trail_running:    'https://images.unsplash.com/photo-1698659313073-e08a7b67c84a?auto=format&fit=crop&w=800&q=80',
+  adventure_racing: 'https://images.unsplash.com/photo-1623011332514-6ad4d39d7af1?auto=format&fit=crop&w=800&q=80',
 }
 
 const ACTIVITY_LABELS = {

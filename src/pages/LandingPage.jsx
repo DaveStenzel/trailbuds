@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const HERO_PHOTO = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=85'
+const HERO_PHOTO = 'https://images.unsplash.com/photo-1614102117755-6eb30fb4ea49?auto=format&fit=crop&w=1920&q=85'
 
 const PARKS = {
   NSW: [
@@ -235,7 +235,7 @@ export default function LandingPage({ session }) {
       <div
         className="relative text-white text-center py-20 px-6"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1920&q=80')`,
+          backgroundImage: `url('https://images.unsplash.com/photo-1720428334395-3100aae2595e?auto=format&fit=crop&w=1920&q=80')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
